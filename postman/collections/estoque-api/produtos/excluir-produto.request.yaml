@@ -1,0 +1,18 @@
+$kind: http-request
+name: Excluir Produto
+method: DELETE
+url: '{{baseUrl}}/produtos/:id'
+order: 3000
+pathVariables:
+  - key: id
+    value: '1'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 200 OK", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Resposta contém confirmação de exclusão", function () {
+          pm.expect(pm.response.text()).to.include("foi excluido");
+      });

@@ -1,0 +1,10 @@
+$kind: collection
+name: Estoque API
+description: |-
+  Coleção para a API de controle de estoque (estoque-api).
+  Servidor Express rodando na porta 3000.
+  Middleware valorProduto rejeita produtos com preço menor que 100.
+variables:
+  - key: baseUrl
+    value: 'http://localhost:3000'
+    description: URL base do servidor local

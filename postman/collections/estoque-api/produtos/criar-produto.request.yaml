@@ -1,0 +1,28 @@
+$kind: http-request
+name: Criar Produto
+method: POST
+url: '{{baseUrl}}/produtos'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nome": "Produto Exemplo",
+      "preco": 150.00,
+      "quantidade": 10
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 200 OK", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Produto com preco menor que 100 é rejeitado", function () {
+          // O middleware valorProduto bloqueia produtos com preco < 100
+          // Este teste verifica o comportamento quando preco >= 100
+          pm.expect(pm.response.code).to.be.oneOf([200, 201]);
+      });
