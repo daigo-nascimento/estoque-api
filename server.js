@@ -1,9 +1,7 @@
-import dotenv from 'dotenv'
-dotenv.config();
-
+import db from './src/database/database.js'
 
 import {loggerMiddleware} from './src/middleware/index.js'
-import express from 'express';
+import express, { json, urlencoded } from 'express';
 
 //require('dotenv').config();
 //const express = require('express');
@@ -23,12 +21,26 @@ app.use(loggerMiddleware);
 
 //parametros da função: req = requisição / res = resposta
 app.get('/', function(req,res){
-     res.status(200).json({
-        "status": "OK",
-        "codigo": 200,
-        "mensagem": `Bem vindo`
+    
+    db('usuarios').select('*')
+        .then((usuarios) => {
 
-    })
+            res.status(200).json({
+                "status": "OK",
+                "codigo": 200,
+                "mensagem": usuarios
+            })
+        })
+        .catch((error)=> {
+            console.log('Erro ao consultar os usuarios')
+
+            res.status(200).json({
+                "status": "OK",
+                "codigo": 500,
+                "mensagem": 'Erro ao consultar os usuarios'
+            })
+        })
+    
 });
 
 app.post('/produtos',(req, res) => {
